@@ -1,0 +1,34 @@
+.align-left {
+    float: left;
+}
+
+.align-right {
+    float: right;
+}
+
+.card-background {
+    background-color: #60646f;
+}
+
+.nom-ville-font {
+    color: #fffffe;
+    font-weight: bold;
+}
+
+.code-postal-font {
+    color: #8b929c;
+    font-weight: bold;
+}
+
+.search-input {
+    border: 0;
+    font-weight: bold;
+}
+
+.alert-success {
+    background-color: #87c981;
+}
+
+.alert-danger {
+    background-color: #b87a7b;
+}
