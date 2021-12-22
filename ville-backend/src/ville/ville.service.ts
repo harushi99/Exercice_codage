@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Ville } from './interfaces/ville.interface';
+import { Ville } from '../common/interfaces/ville.interface';
 
 @Injectable()
 export class VilleService {

@@ -1,6 +1,6 @@
 import { Controller, Get, Res, HttpStatus, Req } from '@nestjs/common';
 import { VilleService } from './ville.service';
-
+import { codeRegionOutreMer } from '../common/constants/constants'
 @Controller('api/ville')
 export class VilleController {
 
@@ -16,8 +16,8 @@ export class VilleController {
     @Get('search')
     async findVillesOutreMere(@Req() req) {
         let options = {};
-        let codeRegionOutreMer = ["^971[0-9]{2}$", "^972[0-9]{2}$", "^973[0-9]{2}$", "^974[0-9]{2}$", "^976[0-9]{2}$"];
-        var t = codeRegionOutreMer.join('|');
+       
+        var regexExpressionOutreMere = codeRegionOutreMer.join('|');
 
         if (req.query.search) {
             options = {
@@ -51,7 +51,7 @@ export class VilleController {
         var totalOutreMere = 0;
         var totalMetropole = 0;
         villes.forEach((ville) => {
-            if (ville.codePostal.match(t)) {
+            if (ville.codePostal.match(regexExpressionOutreMere)) {
                 if (totalOutreMere < limit) {
                     villesOutreMere.push(ville);
                     totalOutreMere++;
