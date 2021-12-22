@@ -7,6 +7,7 @@ function SearchVille() {
     const [villesMetropole, setVillesMetropole] = useState([]);
     const [totalOutreMere, setTotalOutreMere] = useState([]);
     const [totalMetropole, setTotalMetropole] = useState([]);
+    const [showAlert, setshowAlert] = useState(false);
     const [filters, setFilters] = useState({
         search: '',
         sort: ''
@@ -35,8 +36,10 @@ function SearchVille() {
         )()
 
     }, [filters]);
+    
 
     const search = (searchValue) => {
+        if (searchValue) { setshowAlert(true); } else { setshowAlert(false); }
         setFilters({
             ...filters,
             search: searchValue
@@ -77,8 +80,8 @@ function SearchVille() {
                 <div className="col-sm-6 pt-3">
                     <div className="card result-background border-0">
                         <div className="card-body">
-                            <AlertSearch total={totalMetropole} />
-                            <Ville villes={villesMetropole} filters={filters} setFilters={setFilters} />
+                            {showAlert && <AlertSearch total={totalMetropole} />}
+                            <Ville villes={villesMetropole}/>
 
                         </div>
                     </div>
@@ -86,8 +89,8 @@ function SearchVille() {
                 <div className="col-sm-6 pt-3">
                     <div className="card result-background border-0">
                         <div className="card-body">
-                            <AlertSearch total={totalOutreMere} />
-                            <Ville villes={villesOutreMere} filters={filters} setFilters={setFilters} />
+                            {showAlert && <AlertSearch total={totalOutreMere} />}
+                            <Ville villes={villesOutreMere}/>
                         </div>
                     </div>
                 </div>
