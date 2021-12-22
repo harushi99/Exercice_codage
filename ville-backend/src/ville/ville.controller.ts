@@ -1,6 +1,5 @@
-import { Controller, Get, Res, HttpStatus, Req } from '@nestjs/common';
+import { Controller, Get, Res, HttpStatus, Req, Logger } from '@nestjs/common';
 import { VilleService } from './ville.service';
-
 
 @Controller('api/ville')
 export class VilleController {
@@ -14,20 +13,26 @@ export class VilleController {
         return res.status(HttpStatus.OK).json(villes);
     }
 
-    @Get('frontend')
-    async findVilles(@Req() req) {
+    @Get('search')
+    async findVillesOutreMere(@Req() req) {
         let options = {};
+        let codeRegionOutreMer = ["^971[0-9]{2}$", "^972[0-9]{2}$", "^973[0-9]{2}$", "^974[0-9]{2}$", "^976[0-9]{2}$"];
+        var t = codeRegionOutreMer.join('|');
 
         if (req.query.search) {
             options = {
-                $or: [
-                    { codePostal: new RegExp(req.query.search.toString(), 'i') },
-                    { codeCommune: new RegExp(req.query.search.toString(), 'i') },
-                    { nomCommune: new RegExp(req.query.search.toString(), 'i') },
-                    { libelleAcheminement: new RegExp(req.query.search.toString(), 'i') },
+                $and: [
+                    {
+                        $or: [
+                            { codePostal: new RegExp(req.query.search.toString(), 'i') },
+                            { codeCommune: new RegExp(req.query.search.toString(), 'i') },
+                            { nomCommune: new RegExp(req.query.search.toString(), 'i') },
+                            { libelleAcheminement: new RegExp(req.query.search.toString(), 'i') },
+                        ]
+                    }
                 ]
             }
-        }
+        } 
 
         const query = this.villeService.findVilles(options);
 
@@ -36,15 +41,34 @@ export class VilleController {
                 nomCommune: req.query.sort
             })
         }
-
-        const page: number = parseInt(req.query.page) || 1;
+        Logger.log(query);
+        
         const limit = 100;
 
-        const villes = await query.skip((page - 1)*limit).limit(limit).exec();
-        const total = await this.villeService.count(options);
+        var villes = await query.exec();
+
+        var villesMetropole = [];
+        var villesOutreMere = [];
+        var totalOutreMere = 0;
+        var totalMetropole = 0;
+        villes.forEach((ville) => {
+            if (ville.codePostal.match(t)) {
+                if (totalOutreMere < limit) {
+                    villesOutreMere.push(ville);
+                    totalOutreMere++;
+                }
+            } else {
+                if (totalMetropole < limit) {
+                    villesMetropole.push(ville);
+                    totalMetropole++;
+                }
+            }
+        });
         return {
-            villes,
-            total
+            villesMetropole,
+            villesOutreMere,
+            totalOutreMere,
+            totalMetropole
         };
     }
 

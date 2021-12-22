@@ -3,8 +3,10 @@ import Ville from '../components/Ville';
 import AlertSearch from '../components/AlertSearch';
 
 function SearchVille() {
-    const [villes, setVilles] = useState([]);
-    const [total, setTotal] = useState([]);
+    const [villesOutreMere, setVilleOutreMere] = useState([]);
+    const [villesMetropole, setVillesMetropole] = useState([]);
+    const [totalOutreMere, setTotalOutreMere] = useState([]);
+    const [totalMetropole, setTotalMetropole] = useState([]);
     const [filters, setFilters] = useState({
         search: '',
         sort: ''
@@ -24,10 +26,12 @@ function SearchVille() {
                 }
 
                 console.log(filtersParams);
-                const response = await fetch(`http://localhost:5000/api/ville/frontend?${filtersParams.join('&')}`);
+                const response = await fetch(`http://localhost:5000/api/ville/search?${filtersParams.join('&')}`);
                 const content = await response.json();
-                setTotal(content.total);
-                setVilles(content.villes);
+                setTotalMetropole(content.totalMetropole);
+                setVillesMetropole(content.villesMetropole);
+                setTotalOutreMere(content.totalOutreMere);
+                setVilleOutreMere(content.villesOutreMere);
             }
         )()
 
@@ -70,11 +74,22 @@ function SearchVille() {
                     </div>
                 </div>
             </div>
-            <div className="col-sm-6 pt-3">
-                <div className="card result-background border-0">
-                    <div className="card-body">
-                        <AlertSearch total={total} />
-                        <Ville villes={villes} filters={filters} setFilters={setFilters} />
+            <div className="row">
+                <div className="col-sm-6 pt-3">
+                    <div className="card result-background border-0">
+                        <div className="card-body">
+                            <AlertSearch total={totalMetropole} />
+                            <Ville villes={villesMetropole} filters={filters} setFilters={setFilters} />
+
+                        </div>
+                    </div>
+                </div>
+                <div className="col-sm-6 pt-3">
+                    <div className="card result-background border-0">
+                        <div className="card-body">
+                            <AlertSearch total={totalOutreMere} />
+                            <Ville villes={villesOutreMere} filters={filters} setFilters={setFilters} />
+                        </div>
                     </div>
                 </div>
             </div>
