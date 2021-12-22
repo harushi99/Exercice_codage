@@ -58,7 +58,7 @@ function SearchVille() {
             <div className="card result-background border-0">
                 <div className="card-body">
                     <div className="col-md-12 input-group">
-                        <span class="input-group-text result-background search-input">Je recherche...</span>
+                        <span className="input-group-text result-background search-input">Je recherche...</span>
                         <input type="text" className="form-control" placeholder="...une ville, un code postal"
                             onChange={
                                 e => search(e.target.value)

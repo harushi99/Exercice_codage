@@ -6,7 +6,7 @@ const Ville = (props) => {
     return (
         <div className="row">
             {props.villes.map(ville => {
-                return (<div className="col-sm-6 pt-3">
+                return (<div className="col-sm-6 pt-3" key={ville._id}>
                     <div className="card card-background border-0">
                         <div className="card-body">
                             <h5 className="card-title align-left nom-ville-font">{ville.nomCommune}</h5>
