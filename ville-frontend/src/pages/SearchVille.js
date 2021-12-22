@@ -25,7 +25,6 @@ function SearchVille() {
                     filtersParams.push(`sort=${filters.sort}`);
                 }
 
-                console.log(filtersParams);
                 const response = await fetch(`http://localhost:5000/api/ville/search?${filtersParams.join('&')}`);
                 const content = await response.json();
                 setTotalMetropole(content.totalMetropole);

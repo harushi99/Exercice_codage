@@ -1,4 +1,4 @@
-import { Controller, Get, Res, HttpStatus, Req, Logger } from '@nestjs/common';
+import { Controller, Get, Res, HttpStatus, Req } from '@nestjs/common';
 import { VilleService } from './ville.service';
 
 @Controller('api/ville')
@@ -41,7 +41,6 @@ export class VilleController {
                 nomCommune: req.query.sort
             })
         }
-        Logger.log(query);
         
         const limit = 100;
 
